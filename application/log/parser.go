@@ -9,17 +9,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/Zach41/birdlog/application/model"
 	"github.com/Zach41/birdlog/application/reqs"
 	"github.com/araddon/dateparse"
 )
-
-type MetaStore struct {
-	collections map[int64]*model.Collection
-	indexes     map[int64]*model.Index
-	segments    map[int64]*model.Segment
-	ops         []reqs.DDLOperation
-}
 
 func Open(filenames ...string) (*MetaStore, error) {
 	info := &MetaStore{
@@ -40,19 +32,6 @@ func Open(filenames ...string) (*MetaStore, error) {
 
 func (l *MetaStore) Close() {
 	// TODO
-}
-
-func (l *MetaStore) Recover(tso int64) error {
-	end := lowerbound(l.ops, tso)
-	if end == -1 {
-		end = len(l.ops)
-	}
-	ops := l.ops[:end]
-	for _, op := range ops {
-		switch op.Operation() {
-		}
-	}
-	return nil
 }
 
 func readLogFile(filename string) ([]reqs.DDLOperation, error) {
